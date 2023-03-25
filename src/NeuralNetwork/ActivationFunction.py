@@ -1,10 +1,10 @@
 import numpy as np
+from typing import NamedTuple
 
 
-class ActivationFunction:
-    def __init__(self, function: np.vectorize, derivative: np.vectorize) -> None:
-        self.function = function
-        self.derivative = derivative
+class ActivationFunction(NamedTuple):
+    function: np.vectorize
+    derivative: np.vectorize
 
     def __call__(self, x) -> np.ndarray:
         return np.array(self.function(x))

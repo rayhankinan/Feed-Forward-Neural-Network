@@ -1,10 +1,10 @@
 import numpy as np
+from typing import NamedTuple
 from . import Layer
 
 
-class NeuralNetwork:
-    def __init__(self, list_of_layer: list[Layer]) -> None:
-        self.list_of_layer = list_of_layer
+class NeuralNetwork(NamedTuple):
+    list_of_layer: list[Layer]
 
     def get_output(self, x: np.ndarray) -> np.ndarray:
         x_copy: np.ndarray = x.copy()

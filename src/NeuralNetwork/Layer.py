@@ -1,11 +1,11 @@
 import numpy as np
+from typing import NamedTuple
 from . import Perceptron, ActivationFunction
 
 
-class Layer:
-    def __init__(self, list_of_perceptron: list[Perceptron], activation_function: ActivationFunction) -> None:
-        self.list_of_perceptron = list_of_perceptron
-        self.activation_function = activation_function
+class Layer(NamedTuple):
+    list_of_perceptron: list[Perceptron]
+    activation_function: ActivationFunction
 
     def get_output(self, x: np.ndarray) -> np.ndarray:
         array_of_weight = np.array(
