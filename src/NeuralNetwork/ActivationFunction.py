@@ -1,25 +1,33 @@
 from __future__ import annotations
 import numpy as np
-from typing import NamedTuple, Union, Callable
+from typing import NamedTuple, Callable
 
 
 class ActivationFunction(NamedTuple):
-    function: Union[np.vectorize, Callable[[np.ndarray], np.ndarray]]
-    derivative: Union[np.vectorize, Callable[[np.ndarray], np.ndarray]]
+    function: Callable[[np.ndarray], np.ndarray]
+    derivative: Callable[[np.ndarray], np.ndarray]
 
-    def __call__(self, x) -> np.ndarray:
-        return np.array(self.function(x))
+    def __call__(self, x: np.ndarray) -> np.ndarray:
+        return self.function(x)
 
-    def get_derivative(self, x) -> np.ndarray:
-        return np.array(self.derivative(x))
+    def get_derivative(self, x: np.ndarray) -> np.ndarray:
+        return self.derivative(x)
 
 
 class LinearActivationFunction(ActivationFunction):
     def __new__(cls) -> LinearActivationFunction:
+        # Inner Function
+        def linear(x: np.ndarray) -> np.ndarray:
+            return np.array(np.vectorize(lambda x: x)(x))
+
+        # Inner Function
+        def derivative_linear(x: np.ndarray) -> np.ndarray:
+            return np.array(np.vectorize(lambda _: 1)(x))
+
         self = super(LinearActivationFunction, cls).__new__(
             cls,
-            np.vectorize(lambda x: x),
-            np.vectorize(lambda _: 1),
+            linear,
+            derivative_linear,
         )
 
         return self
@@ -27,10 +35,18 @@ class LinearActivationFunction(ActivationFunction):
 
 class ReLUActivationFunction(ActivationFunction):
     def __new__(cls) -> ReLUActivationFunction:
+        # Inner Function
+        def relu(x: np.ndarray) -> np.ndarray:
+            return np.array(np.vectorize(lambda x: max(0, x))(x))
+
+        # Inner Function
+        def derivative_relu(x: np.ndarray) -> np.ndarray:
+            return np.array(np.vectorize(lambda x: 1 if x > 0 else 0)(x))
+
         self = super(ReLUActivationFunction, cls).__new__(
             cls,
-            np.vectorize(lambda x: max(0, x)),
-            np.vectorize(lambda x: 1 if x > 0 else 0),
+            relu,
+            derivative_relu,
         )
 
         return self
@@ -38,10 +54,18 @@ class ReLUActivationFunction(ActivationFunction):
 
 class SigmoidActivationFunction(ActivationFunction):
     def __new__(cls) -> SigmoidActivationFunction:
+        # Inner Function
+        def sigmoid(x: np.ndarray) -> np.ndarray:
+            return np.array(np.vectorize(lambda x: 1 / (1 + np.exp(-x)))(x))
+
+        # Inner Function
+        def derivative_sigmoid(x: np.ndarray) -> np.ndarray:
+            return np.array(np.vectorize(lambda x: np.exp(-x) / (1 + np.exp(-x)) ** 2)(x))
+
         self = super(SigmoidActivationFunction, cls).__new__(
             cls,
-            np.vectorize(lambda x: 1 / (1 + np.exp(-x))),
-            np.vectorize(lambda x: np.exp(-x) / (1 + np.exp(-x)) ** 2),
+            sigmoid,
+            derivative_sigmoid,
         )
 
         return self
@@ -49,7 +73,6 @@ class SigmoidActivationFunction(ActivationFunction):
 
 class SoftmaxActivationFunction(ActivationFunction):
     def __new__(cls) -> SoftmaxActivationFunction:
-
         # Inner Function
         def softmax(x: np.ndarray) -> np.ndarray:
             shift_x = np.array(x - np.max(x))
