@@ -1,11 +1,11 @@
 from __future__ import annotations
 import numpy as np
-from typing import NamedTuple
+from typing import NamedTuple, Union, Callable
 
 
 class ActivationFunction(NamedTuple):
-    function: np.vectorize
-    derivative: np.vectorize
+    function: Union[np.vectorize, Callable[[np.ndarray], np.ndarray]]
+    derivative: Union[np.vectorize, Callable[[np.ndarray], np.ndarray]]
 
     def __call__(self, x) -> np.ndarray:
         return np.array(self.function(x))
@@ -63,8 +63,8 @@ class SoftmaxActivationFunction(ActivationFunction):
 
         self = super(SoftmaxActivationFunction, cls).__new__(
             cls,
-            np.vectorize(softmax),
-            np.vectorize(derivative_softmax),
+            softmax,
+            derivative_softmax,
         )
 
         return self

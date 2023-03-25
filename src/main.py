@@ -1,5 +1,5 @@
 import numpy as np
-from NeuralNetwork import Perceptron, Layer, SigmoidActivationFunction, NeuralNetwork
+from NeuralNetwork import Perceptron, Layer, SoftmaxActivationFunction, NeuralNetwork
 
 
 if __name__ == "__main__":
@@ -10,7 +10,7 @@ if __name__ == "__main__":
                     Perceptron(weight=np.array([0.1, 0.2, 0.3])),
                     Perceptron(weight=np.array([0.4, 0.5, 0.6])),
                 ],
-                activation_function=SigmoidActivationFunction(),
+                activation_function=SoftmaxActivationFunction(),
             )
         ]
     )
