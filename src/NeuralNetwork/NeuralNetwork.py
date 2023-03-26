@@ -15,3 +15,14 @@ class NeuralNetwork(NamedTuple):
             x_copy = layer.get_output(biased_x_copy)
 
         return x_copy
+
+    def get_batch_output(self, batch_x: np.ndarray) -> np.ndarray:
+        N = batch_x.shape[0]
+        batch_x_copy: np.ndarray = batch_x.copy()
+
+        for layer in self.list_of_layer:
+            bias = np.ones(N)
+            biased_batch_x_copy = np.array(np.c_[bias, batch_x_copy])
+            batch_x_copy = layer.get_batch_output(biased_batch_x_copy)
+
+        return batch_x_copy

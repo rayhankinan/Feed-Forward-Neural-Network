@@ -15,5 +15,5 @@ if __name__ == "__main__":
         ]
     )
 
-    output_x = neural_network.get_output(np.array([1., 2.]))
+    output_x = neural_network.get_batch_output(np.array([[1., 2.], [2., 3.]]))
     print(output_x)
