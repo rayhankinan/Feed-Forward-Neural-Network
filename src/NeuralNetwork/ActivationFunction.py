@@ -21,8 +21,8 @@ class LinearActivationFunction(ActivationFunction):
             return np.array(np.vectorize(lambda x: x)(x))
 
         # Inner Function
-        def derivative_output_linear(x: np.ndarray) -> np.ndarray:
-            return np.array(np.vectorize(lambda _: 1)(x))
+        def derivative_output_linear(o: np.ndarray) -> np.ndarray:
+            return np.array(np.vectorize(lambda _: 1)(o))
 
         self = super(LinearActivationFunction, cls).__new__(
             cls,
@@ -40,8 +40,8 @@ class ReLUActivationFunction(ActivationFunction):
             return np.array(np.vectorize(lambda x: max(0, x))(x))
 
         # Inner Function
-        def derivative_output_relu(x: np.ndarray) -> np.ndarray:
-            return np.array(np.vectorize(lambda x: 1 if x >= 0 else 0)(x))
+        def derivative_output_relu(o: np.ndarray) -> np.ndarray:
+            return np.array(np.vectorize(lambda o: 1 if o >= 0 else 0)(o))
 
         self = super(ReLUActivationFunction, cls).__new__(
             cls,
@@ -59,8 +59,8 @@ class SigmoidActivationFunction(ActivationFunction):
             return np.array(np.vectorize(lambda x: 1 / (1 + np.exp(-x)))(x))
 
         # Inner Function
-        def derivative_output_sigmoid(x: np.ndarray) -> np.ndarray:
-            return np.array(np.vectorize(lambda x: x * (1 - x))(x))
+        def derivative_output_sigmoid(o: np.ndarray) -> np.ndarray:
+            return np.array(np.vectorize(lambda o: o * (1 - o))(o))
 
         self = super(SigmoidActivationFunction, cls).__new__(
             cls,
@@ -80,8 +80,8 @@ class SoftmaxActivationFunction(ActivationFunction):
             return np.array(exps / np.sum(exps, axis=0))
 
         # Inner Function (TODO: Masih belum sesuai dengan rumus)
-        def derivative_output_softmax(x: np.ndarray) -> np.ndarray:
-            s = softmax(x).reshape(-1, 1)
+        def derivative_output_softmax(o: np.ndarray) -> np.ndarray:
+            s = o.reshape(-1, 1)
             return np.array(np.diagflat(s) - np.dot(s, s.T))
 
         self = super(SoftmaxActivationFunction, cls).__new__(
