@@ -1,0 +1,23 @@
+{
+  "num_layers": 3,
+  "data": [
+    {
+      "num_neurons": 2,
+      "function": "relu",
+      "bias": [0, -1],
+      "weights": [
+        [1, 1],
+        [1, 1]
+      ]
+    },
+    {
+      "num_neurons": 2,
+      "function": "relu",
+      "bias": [0],
+      "weights": [
+        [1],
+        [-2]
+      ]
+    }
+  ]
+}
