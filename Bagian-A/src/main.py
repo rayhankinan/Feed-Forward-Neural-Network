@@ -2,6 +2,7 @@ import numpy as np
 import json
 from ffnn import FFNN
 from layer import Layer
+from graphviz import Digraph
 
 model = str(input("Masukkan nama file model (dalam format .json): "))
 model = open(f"Bagian-A/models/{model}", "r")
@@ -13,4 +14,13 @@ for layer in model["data"]:
   ffnn.new_layer(new_layer)
 
 ffnn.forward()
+
+
 print(ffnn.output)
+
+# Create Graphviz digraph object
+dot = ffnn.visualize()
+
+
+# Save and render the graph
+dot.render("ffnn_graph", format="png", cleanup=True)
