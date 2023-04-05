@@ -8,9 +8,15 @@ model = str(input("Masukkan nama file model (dalam format .json): "))
 model = open(f"Bagian-A/models/{model}", "r")
 model = json.load(model)
 
-ffnn = FFNN(np.array([[0, 0], [0, 1], [1, 0], [1, 1]]), [])
-for layer in model["data"]:
-  new_layer = Layer(layer["num_neurons"], layer["function"], np.array(layer["weights"]), np.array(layer["bias"]))
+layers = model["case"]["model"]
+weights = model["case"]["weights"]
+inputArray = model["case"]["input"]
+
+ffnn = FFNN(np.array(inputArray), [])
+for i in range (len(layers["layers"])):
+  layer = layers["layers"][i]
+  weight = weights[i]
+  new_layer = Layer(layer["number_of_neurons"], layer["activation_function"], np.array(weight[1:]), np.array(weight[0]))
   ffnn.new_layer(new_layer)
 
 ffnn.forward()

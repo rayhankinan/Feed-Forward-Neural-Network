@@ -16,7 +16,6 @@ class FFNN:
     self.output = self.input
     for layer in self.layers:
       self.output = layer.forward(self.output)
-    self.predictions()
 
     return self.output
   

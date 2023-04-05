@@ -17,7 +17,7 @@ class Layer:
       elif self.str_function == 'linear':
         self.function = lambda x: x
       else:
-        self.function = lambda x: np.exp(x) / np.sum(np.exp(x), axis=0)
+        self.function = lambda x: np.exp(x) / np.sum(np.exp(x))
 
   def forward(self, input: np.array):
     self.output = self.function(np.dot(input, self.weights) + self.bias)
