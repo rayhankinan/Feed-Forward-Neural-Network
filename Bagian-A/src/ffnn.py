@@ -44,7 +44,7 @@ class FFNN:
       for i in range(len(self.input[0])):
         for j in range(len(self.output[0])):
           weight = self.layers[0].weights[i][j]
-          dot.edge(f'input{i}', f'output{j}', label=f'{weight:.2f}', color='#2ecc71')
+          dot.edge(f'input{i}', f'output{j}', xlabel=f'{weight:.2f}', color='#2ecc71', xlabelfloat='true')
     else :
     # Input layer
       for i in range(len(self.input[0])):
@@ -59,13 +59,13 @@ class FFNN:
               for j in range(len(self.input[0])):
                   for k in range(self.layers[i+1].neuron):
                       weight = self.layers[i].weights[j][k]
-                      dot.edge(f'input{j}', f'hidden{i}{k}', label=f'{weight:.2f}', color='#2ecc71')
+                      dot.edge(f'input{j}', f'hidden{i}{k}', xlabel=f'{weight:.2f}', color='#2ecc71')
 
           else:
               for j in range(self.layers[i].neuron):
                   for k in range(self.layers[i+1].neuron):
                       weight = self.layers[i].weights[j][k]
-                      dot.edge(f'hidden{i-1}{j}', f'hidden{i}{k}', label=f'{weight:.2f}', color='#e67e22')
+                      dot.edge(f'hidden{i-1}{j}', f'hidden{i}{k}', xlabel=f'{weight:.2f}', color='#e67e22')
 
       # Output layer
       for i in range(len(self.output[0])):
@@ -74,6 +74,7 @@ class FFNN:
       for i in range(self.layers[-1].neuron):
           for j in range(len(self.output[0])):
               weight = self.layers[-1].weights[i][j]
-              dot.edge(f'hidden{len(self.layers)-2}{i}', f'output{j}', label=f'{weight:.2f}', color='#f1c40f')
-              
+              dot.edge(f'hidden{len(self.layers)-2}{i}', f'output{j}', xlabel=f'{weight:.2f}', color='#f1c40f')
+
+
     return dot
