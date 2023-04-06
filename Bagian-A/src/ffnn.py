@@ -39,37 +39,41 @@ class FFNN:
     dot.attr(rankdir='LR', nodesep='1', ranksep='')
     dot.attr('node', shape='circle', width='0.4', height='0.4')
     
-    # Input layer
-    for i in range(len(self.input[0])):
-        dot.node(f'input{i}', f'input{i}', color='#2ecc71')
-
-    # Hidden layers
-    for i in range(len(self.layers) - 1):
-        for j in range(self.layers[i+1].neuron):
-            dot.node(f'hidden{i}{j}', f'hidden{i}{j}', color='#e67e22')
-
-        if i == 0:
-            for j in range(len(self.input[0])):
-                for k in range(self.layers[i+1].neuron):
-                    weight = self.layers[i].weights[j][k]
-                    dot.edge(f'input{j}', f'hidden{i}{k}', label=f'{weight:.2f}', color='#2ecc71')
-
-        else:
-            for j in range(self.layers[i].neuron):
-                for k in range(self.layers[i+1].neuron):
-                    weight = self.layers[i].weights[j][k]
-                    dot.edge(f'hidden{i-1}{j}', f'hidden{i}{k}', label=f'{weight:.2f}', color='#e67e22')
-
-    # Output layer
-    for i in range(len(self.output[0])):
-        dot.node(f'output{i}', f'output{i}', color='#f1c40f')
-
-    for i in range(self.layers[-1].neuron):
+    #if no hidden layer
+    if len(self.layers) == 1:
+      for i in range(len(self.input[0])):
         for j in range(len(self.output[0])):
-            weight = self.layers[-1].weights[i][j]
-            dot.edge(f'hidden{len(self.layers)-2}{i}', f'output{j}', label=f'{weight:.2f}', color='#f1c40f')
+          weight = self.layers[0].weights[i][j]
+          dot.edge(f'input{i}', f'output{j}', label=f'{weight:.2f}', color='#2ecc71')
+    else :
+    # Input layer
+      for i in range(len(self.input[0])):
+          dot.node(f'input{i}', f'input{i}', color='#2ecc71')
 
-    # dot.node_attr.update(fontname='Helvetica', fontsize='14')
-    # dot.edge_attr.update(fontname='Helvetica', fontsize='12')
+      # Hidden layers
+      for i in range(len(self.layers) - 1):
+          for j in range(self.layers[i+1].neuron):
+              dot.node(f'hidden{i}{j}', f'hidden{i}{j}', color='#e67e22')
 
+          if i == 0:
+              for j in range(len(self.input[0])):
+                  for k in range(self.layers[i+1].neuron):
+                      weight = self.layers[i].weights[j][k]
+                      dot.edge(f'input{j}', f'hidden{i}{k}', label=f'{weight:.2f}', color='#2ecc71')
+
+          else:
+              for j in range(self.layers[i].neuron):
+                  for k in range(self.layers[i+1].neuron):
+                      weight = self.layers[i].weights[j][k]
+                      dot.edge(f'hidden{i-1}{j}', f'hidden{i}{k}', label=f'{weight:.2f}', color='#e67e22')
+
+      # Output layer
+      for i in range(len(self.output[0])):
+          dot.node(f'output{i}', f'output{i}', color='#f1c40f')
+
+      for i in range(self.layers[-1].neuron):
+          for j in range(len(self.output[0])):
+              weight = self.layers[-1].weights[i][j]
+              dot.edge(f'hidden{len(self.layers)-2}{i}', f'output{j}', label=f'{weight:.2f}', color='#f1c40f')
+              
     return dot
