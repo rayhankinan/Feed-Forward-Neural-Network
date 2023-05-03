@@ -1,7 +1,7 @@
 import numpy as np
 from typing import NamedTuple
 from NeuralNetwork import NeuralNetwork
-from . import MiniBatch
+from . import MiniBatch, ErrorFunction
 
 
 class Backpropagation(NamedTuple):
@@ -9,7 +9,7 @@ class Backpropagation(NamedTuple):
     learning_data: np.ndarray
     learning_target: np.ndarray
 
-    def learn(self, learning_rate: float, mini_batch_size: int, max_iter: int, threshold: float) -> NeuralNetwork:
+    def learn(self, learning_rate: float, mini_batch_size: int, max_iter: int, threshold: float, error_function: ErrorFunction) -> NeuralNetwork:
         current_error = np.inf
         data_length = self.learning_data.shape[0]
         result: NeuralNetwork = self.neural_network

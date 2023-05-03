@@ -1,6 +1,6 @@
 import numpy as np
 from NeuralNetwork import Layer, Row, ActivationFunction, LinearActivationFunction, ReLUActivationFunction, SigmoidActivationFunction, SoftmaxActivationFunction, NeuralNetwork
-from Backpropagation import Backpropagation
+from Backpropagation import Backpropagation, ErrorFunction, SumOfSquaredErrorFunction, CrossEntropyErrorFunction
 
 
 class FileSystem:
@@ -12,6 +12,7 @@ class FileSystem:
 
             prev_num_of_perceptrons = input_size
             list_of_layer: list[Layer] = []
+            activation_function_type: str
 
             for _ in range(num_of_layers):
                 num_of_perceptrons = int(file.readline().rstrip('\n'))
@@ -25,8 +26,8 @@ class FileSystem:
                     list_of_weight_row.append(row)
 
                 activation_function_type = file.readline().rstrip('\n')
-                activation_function: ActivationFunction
 
+                activation_function: ActivationFunction
                 match activation_function_type:
                     case "linear":
                         activation_function = LinearActivationFunction()
@@ -74,4 +75,13 @@ class FileSystem:
                 np.array(target_array)
             )
 
-            return backpropagation.learn(learning_rate, mini_batch_size, max_iter, threshold)
+            error_function: ErrorFunction
+            match activation_function_type:
+                case "linear" | "relu" | "sigmoid":
+                    error_function = SumOfSquaredErrorFunction()
+                case "softmax":
+                    error_function = CrossEntropyErrorFunction()
+                case _:
+                    raise NotImplementedError()
+
+            return backpropagation.learn(learning_rate, mini_batch_size, max_iter, threshold, error_function)
