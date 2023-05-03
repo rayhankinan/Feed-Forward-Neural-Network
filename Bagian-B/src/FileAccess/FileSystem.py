@@ -47,21 +47,21 @@ class FileSystem:
             initial_neural_network = NeuralNetwork(list_of_layer)
 
             test_case_size = int(file.readline().rstrip('\n'))
-            input_array = np.array([])
-            target_array = np.array([])
+            input_array: list[np.ndarray] = []
+            target_array: list[np.ndarray] = []
 
             for _ in range(test_case_size):
                 input_vector = list(
                     map(float, file.readline().rstrip('\n').split())
                 )
 
-                input_array = np.append(input_array, input_vector)
+                input_array.append(np.array(input_vector))
 
             for _ in range(test_case_size):
                 target_vector = list(
                     map(float, file.readline().rstrip('\n').split())
                 )
-                target_array = np.append(target_array, target_vector)
+                target_array.append(np.array(target_vector))
 
             learning_rate = float(file.readline().rstrip('\n'))
             mini_batch_size = int(file.readline().rstrip('\n'))
@@ -69,7 +69,9 @@ class FileSystem:
             threshold = float(file.readline().rstrip('\n'))
 
             backpropagation = Backpropagation(
-                initial_neural_network, input_array, target_array
+                initial_neural_network,
+                np.array(input_array),
+                np.array(target_array)
             )
 
             return backpropagation.learn(learning_rate, mini_batch_size, max_iter, threshold)

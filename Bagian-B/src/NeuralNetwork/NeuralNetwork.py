@@ -51,3 +51,6 @@ class NeuralNetwork(NamedTuple):
             all_output.append(batch_x_copy)
 
         return all_output
+
+    def get_weight(self) -> list[np.ndarray]:
+        return [layer.get_weight() for layer in self.list_of_layer]
