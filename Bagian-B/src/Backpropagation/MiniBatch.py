@@ -12,5 +12,6 @@ class MiniBatch(NamedTuple):
         list_of_output = self.neural_network.get_all_batch_output(
             self.partitioned_learning_data
         )
+        result: NeuralNetwork = self.neural_network
 
-        return self.neural_network
+        return result

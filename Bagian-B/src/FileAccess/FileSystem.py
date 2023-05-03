@@ -6,14 +6,17 @@ class FileSystem:
     @staticmethod
     def read_neural_network(path) -> NeuralNetwork:
         with open(path, 'r') as file:
+            input_size = int(file.readline().rstrip('\n'))
             num_of_layers = int(file.readline().rstrip('\n'))
+
+            prev_num_of_perceptrons = input_size
             list_of_layer: list[Layer] = []
 
             for _ in range(num_of_layers):
                 num_of_perceptrons = int(file.readline().rstrip('\n'))
                 list_of_perceptron: list[Perceptron] = []
 
-                for _ in range(num_of_perceptrons):
+                for _ in range(prev_num_of_perceptrons + 1):
                     weight = np.array(
                         list(map(float, file.readline().rstrip('\n').split()))
                     )
@@ -37,5 +40,7 @@ class FileSystem:
 
                 layer = Layer(list_of_perceptron, activation_function)
                 list_of_layer.append(layer)
+
+                prev_num_of_perceptrons = num_of_perceptrons
 
             return NeuralNetwork(list_of_layer)

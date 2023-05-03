@@ -12,6 +12,7 @@ class Backpropagation(NamedTuple):
     def learn(self, learning_rate: float, threshold: float, mini_batch_size: int, max_iter: int) -> NeuralNetwork:
         current_error = np.inf
         data_length = self.learning_data.shape[0]
+        result: NeuralNetwork = self.neural_network
 
         for _ in range(max_iter):
             if current_error < threshold:
@@ -24,11 +25,11 @@ class Backpropagation(NamedTuple):
                 partitioned_learning_target = self.learning_target[start_index:end_index]
 
                 mini_batch = MiniBatch(
-                    self.neural_network,
+                    result,
                     partitioned_learning_data,
                     partitioned_learning_target,
                 )
-                self.neural_network = mini_batch.learn(learning_rate)
+                result = mini_batch.learn(learning_rate)
                 start_index += mini_batch_size
 
-        return self.neural_network
+        return result

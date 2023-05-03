@@ -11,7 +11,7 @@ class Layer(NamedTuple):
         array_of_weight = np.array(
             [perceptron.weight for perceptron in self.list_of_perceptron]
         )
-        weighted_x = np.array(np.dot(array_of_weight, x))
+        weighted_x = np.array(np.dot(array_of_weight.T, x))
         activated_x = self.activation_function(weighted_x)
 
         return activated_x
@@ -20,7 +20,7 @@ class Layer(NamedTuple):
         array_of_weight = np.array(
             [perceptron.weight for perceptron in self.list_of_perceptron]
         )
-        weighted_batch_x = np.array(np.dot(batch_x, array_of_weight.T))
+        weighted_batch_x = np.array(np.dot(batch_x, array_of_weight))
         activated_batch_x = self.activation_function(weighted_batch_x)
 
         return activated_batch_x
