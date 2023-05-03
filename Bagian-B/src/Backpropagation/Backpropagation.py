@@ -19,6 +19,7 @@ class Backpropagation(NamedTuple):
                 break
 
             start_index = 0
+            current_error = 0
             while start_index < data_length:
                 end_index = min(start_index + mini_batch_size, data_length)
                 partitioned_learning_data = self.learning_data[start_index:end_index]
@@ -29,9 +30,11 @@ class Backpropagation(NamedTuple):
                     partitioned_learning_data,
                     partitioned_learning_target,
                 )
-                result = mini_batch.learn(learning_rate)
+                result, new_error = mini_batch.learn(
+                    learning_rate,
+                    error_function,
+                )
                 start_index += mini_batch_size
-
-        # TODO: Update nilai current_error
+                current_error += new_error
 
         return result

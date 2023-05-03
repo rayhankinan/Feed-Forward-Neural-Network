@@ -14,7 +14,7 @@ class SumOfSquaredErrorFunction(ErrorFunction):
     def __new__(cls) -> SumOfSquaredErrorFunction:
         # Inner Function
         def sum_of_squared_error(o: np.ndarray, t: np.ndarray) -> float:
-            return np.sum(np.square(o - t)) / 2
+            return np.sum(np.sum(np.square(o - t), axis=1) / 2, axis=0)
 
         self = super(SumOfSquaredErrorFunction, cls).__new__(
             cls,
@@ -30,7 +30,7 @@ class CrossEntropyErrorFunction(ErrorFunction):
     def __new__(cls) -> CrossEntropyErrorFunction:
         # Inner Function
         def cross_entropy_error(o: np.ndarray, t: np.ndarray) -> float:
-            return -np.sum(t * np.log(o))
+            return np.sum(-np.sum(t * np.log(o), axis=1), axis=0)
 
         self = super(CrossEntropyErrorFunction, cls).__new__(
             cls,
