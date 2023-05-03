@@ -1,0 +1,9 @@
+<input size>
+<number of layer>
+<for each layer>
+    <number of perceptron>
+    <weight array>
+    <activation function>
+<test case size>
+<input array>
+<target array>

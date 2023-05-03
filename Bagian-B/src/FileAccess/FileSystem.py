@@ -1,5 +1,5 @@
 import numpy as np
-from NeuralNetwork import Layer, Perceptron, ActivationFunction, LinearActivationFunction, ReLUActivationFunction, SigmoidActivationFunction, SoftmaxActivationFunction, NeuralNetwork
+from NeuralNetwork import Layer, Row, ActivationFunction, LinearActivationFunction, ReLUActivationFunction, SigmoidActivationFunction, SoftmaxActivationFunction, NeuralNetwork
 
 
 class FileSystem:
@@ -14,14 +14,14 @@ class FileSystem:
 
             for _ in range(num_of_layers):
                 num_of_perceptrons = int(file.readline().rstrip('\n'))
-                list_of_perceptron: list[Perceptron] = []
+                list_of_row: list[Row] = []
 
                 for _ in range(prev_num_of_perceptrons + 1):
                     weight = np.array(
                         list(map(float, file.readline().rstrip('\n').split()))
                     )
-                    perceptron = Perceptron(weight)
-                    list_of_perceptron.append(perceptron)
+                    row = Row(weight)
+                    list_of_row.append(row)
 
                 activation_function_type = file.readline().rstrip('\n')
                 activation_function: ActivationFunction
@@ -38,9 +38,11 @@ class FileSystem:
                     case _:
                         raise NotImplementedError()
 
-                layer = Layer(list_of_perceptron, activation_function)
+                layer = Layer(list_of_row, activation_function)
                 list_of_layer.append(layer)
 
                 prev_num_of_perceptrons = num_of_perceptrons
+
+            test_case_size = int(file.readline().rstrip('\n'))
 
             return NeuralNetwork(list_of_layer)
