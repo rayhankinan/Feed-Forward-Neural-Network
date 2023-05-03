@@ -9,7 +9,7 @@ class Backpropagation(NamedTuple):
     learning_data: np.ndarray
     learning_target: np.ndarray
 
-    def learn(self, learning_rate: float, threshold: float, mini_batch_size: int, max_iter: int) -> NeuralNetwork:
+    def learn(self, learning_rate: float, mini_batch_size: int, max_iter: int, threshold: float) -> NeuralNetwork:
         current_error = np.inf
         data_length = self.learning_data.shape[0]
         result: NeuralNetwork = self.neural_network

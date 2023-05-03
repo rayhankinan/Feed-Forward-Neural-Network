@@ -7,3 +7,7 @@
 <test case size>
 <input array>
 <target array>
+<learning rate>
+<mini batch size>
+<max iteration>
+<threshold>
