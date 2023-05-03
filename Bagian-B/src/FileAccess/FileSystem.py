@@ -47,8 +47,8 @@ class FileSystem:
             initial_neural_network = NeuralNetwork(list_of_layer)
 
             test_case_size = int(file.readline().rstrip('\n'))
-            input_array = np.empty((0, 0))
-            target_array = np.empty((0, 0))
+            input_array = np.array([])
+            target_array = np.array([])
 
             for _ in range(test_case_size):
                 input_vector = list(
@@ -61,7 +61,6 @@ class FileSystem:
                 target_vector = list(
                     map(float, file.readline().rstrip('\n').split())
                 )
-
                 target_array = np.append(target_array, target_vector)
 
             learning_rate = float(file.readline().rstrip('\n'))

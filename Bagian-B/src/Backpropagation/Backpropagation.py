@@ -32,4 +32,6 @@ class Backpropagation(NamedTuple):
                 result = mini_batch.learn(learning_rate)
                 start_index += mini_batch_size
 
+        # TODO: Update nilai current_error
+
         return result
