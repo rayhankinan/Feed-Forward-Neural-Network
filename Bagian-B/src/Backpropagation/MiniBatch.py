@@ -21,7 +21,7 @@ class MiniBatch(NamedTuple):
             x = np.array(np.c_[np.ones(raw_x.shape[0]), raw_x])
 
             o = list_of_output[i]
-            t = self.partitioned_learning_target[i]
+            t = self.partitioned_learning_target
             derivated_output = result.list_of_layer[i].activation_function.get_derivative_output(
                 o
             )
@@ -56,6 +56,8 @@ class MiniBatch(NamedTuple):
             self.partitioned_learning_data
         )
         sum_error = error_function(
-            current_output, self.partitioned_learning_target)
+            current_output,
+            self.partitioned_learning_target,
+        )
 
         return result, sum_error
