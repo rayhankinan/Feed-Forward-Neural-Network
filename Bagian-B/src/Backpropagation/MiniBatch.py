@@ -36,7 +36,7 @@ class MiniBatch(NamedTuple):
                 previous_delta_error = delta_error
 
             else:
-                output_weight = result.list_of_layer[i + 1].get_weight()
+                output_weight = result.list_of_layer[i + 1].get_weight()[1:]
                 delta_error = np.multiply(
                     np.dot(
                         previous_delta_error, output_weight.T
