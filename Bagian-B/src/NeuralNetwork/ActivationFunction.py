@@ -41,7 +41,7 @@ class ReLUActivationFunction(ActivationFunction):
 
         # Inner Function
         def derivative_output_relu(o: np.ndarray) -> np.ndarray:
-            return np.array(np.vectorize(lambda o: 1 if o >= 0 else 0)(o))
+            return np.array(np.vectorize(lambda o: 1 if o > 0 else 0)(o))
 
         self = super(ReLUActivationFunction, cls).__new__(
             cls,
