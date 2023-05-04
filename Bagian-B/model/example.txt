@@ -1,0 +1,6 @@
+<input size>
+<number of layer>
+<for each layer>
+    <number of perceptron>
+    <weight array>
+    <activation function>
