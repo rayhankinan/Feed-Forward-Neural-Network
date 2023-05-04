@@ -16,14 +16,14 @@ class Backpropagation(NamedTuple):
         current_error = np.inf
         index = 0
 
-        # Until the error is less than the threshold or the maximum iteration is reached
+        # Until the error is less than or equal to the threshold or the maximum iteration is reached
         while current_error > threshold and index < max_iter:
             start_time = time.time()
 
             # Get Output
             current_output = result.get_batch_output(self.learning_data)
 
-            # Mini-batch learning
+            # Mini-Batch Learning
             start_index = 0
             while start_index < data_length:
                 end_index = min(start_index + mini_batch_size, data_length)

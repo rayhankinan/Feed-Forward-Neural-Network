@@ -25,7 +25,7 @@ class MiniBatch(NamedTuple):
             o = list_of_output[i]
             t = self.partitioned_learning_target
             derivated_output = result.list_of_layer[i].activation_function.get_derivative_output(
-                o
+                o, t
             )
 
             if i == len(list_of_output) - 1:

@@ -5,13 +5,13 @@ from typing import NamedTuple, Callable
 
 class ActivationFunction(NamedTuple):
     function: Callable[[np.ndarray], np.ndarray]
-    derivative_output: Callable[[np.ndarray], np.ndarray]
+    derivative_output: Callable[[np.ndarray, np.ndarray], np.ndarray]
 
-    def __call__(self, x: np.ndarray) -> np.ndarray:
-        return self.function(x)
+    def __call__(self, o: np.ndarray) -> np.ndarray:
+        return self.function(o)
 
-    def get_derivative_output(self, x: np.ndarray) -> np.ndarray:
-        return self.derivative_output(x)
+    def get_derivative_output(self, o: np.ndarray, t: np.ndarray) -> np.ndarray:
+        return self.derivative_output(o, t)
 
 
 class LinearActivationFunction(ActivationFunction):
@@ -21,7 +21,7 @@ class LinearActivationFunction(ActivationFunction):
             return np.array(np.vectorize(lambda x: x)(x))
 
         # Inner Function
-        def derivative_output_linear(o: np.ndarray) -> np.ndarray:
+        def derivative_output_linear(o: np.ndarray, _: np.ndarray) -> np.ndarray:
             return np.array(np.vectorize(lambda _: 1)(o))
 
         self = super(LinearActivationFunction, cls).__new__(
@@ -40,7 +40,7 @@ class ReLUActivationFunction(ActivationFunction):
             return np.array(np.vectorize(lambda x: max(0, x))(x))
 
         # Inner Function
-        def derivative_output_relu(o: np.ndarray) -> np.ndarray:
+        def derivative_output_relu(o: np.ndarray, _: np.ndarray) -> np.ndarray:
             return np.array(np.vectorize(lambda o: 1 if o > 0 else 0)(o))
 
         self = super(ReLUActivationFunction, cls).__new__(
@@ -59,7 +59,7 @@ class SigmoidActivationFunction(ActivationFunction):
             return np.array(np.vectorize(lambda x: 1 / (1 + np.exp(-x)))(x))
 
         # Inner Function
-        def derivative_output_sigmoid(o: np.ndarray) -> np.ndarray:
+        def derivative_output_sigmoid(o: np.ndarray, _: np.ndarray) -> np.ndarray:
             return np.array(np.vectorize(lambda o: o * (1 - o))(o))
 
         self = super(SigmoidActivationFunction, cls).__new__(
@@ -79,10 +79,8 @@ class SoftmaxActivationFunction(ActivationFunction):
             exps = np.exp(shift_x)
             return np.array(exps / np.sum(exps, axis=0))
 
-        # Inner Function (TODO: Masih belum sesuai dengan rumus)
-        def derivative_output_softmax(o: np.ndarray) -> np.ndarray:
-            s = o.reshape(-1, 1)
-            return np.array(np.diagflat(s) - np.dot(s, s.T))
+        def derivative_output_softmax(o: np.ndarray, t: np.ndarray) -> np.ndarray:
+            return np.array(np.subtract(o, t))
 
         self = super(SoftmaxActivationFunction, cls).__new__(
             cls,
