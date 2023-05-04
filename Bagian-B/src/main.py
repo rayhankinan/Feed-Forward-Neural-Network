@@ -63,3 +63,8 @@ if __name__ == "__main__":
     print()
 
     print(f"Error: {cross_entropy(y_pred, numpy_y_test)}")
+
+    FileSystem.save_to_file(
+        new_neural_network,
+        "./Bagian-B/model/iris-learn.txt"
+    )
