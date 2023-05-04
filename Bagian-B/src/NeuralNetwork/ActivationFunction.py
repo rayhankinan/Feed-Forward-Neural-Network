@@ -75,9 +75,10 @@ class SoftmaxActivationFunction(ActivationFunction):
     def __new__(cls) -> SoftmaxActivationFunction:
         # Inner Function
         def softmax(x: np.ndarray) -> np.ndarray:
-            shift_x = np.array(x - np.max(x))
+            shift_x = np.array(x - np.max(x))  # Normalized
             exps = np.exp(shift_x)
-            return np.array(exps / np.sum(np.sum(exps, axis=1), axis=0))
+            sums = np.sum(exps, axis=1, keepdims=True)
+            return np.array(exps / sums)
 
         def derivative_output_softmax(o: np.ndarray, t: np.ndarray) -> np.ndarray:
             return np.array(np.subtract(o, t))
