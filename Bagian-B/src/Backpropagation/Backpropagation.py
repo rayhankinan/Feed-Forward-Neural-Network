@@ -17,7 +17,7 @@ class Backpropagation(NamedTuple):
         index = 0
 
         # Until the error is less than the threshold or the maximum iteration is reached
-        while current_error >= threshold and index < max_iter:
+        while current_error > threshold and index < max_iter:
             start_time = time.time()
 
             # Get Output
@@ -47,7 +47,7 @@ class Backpropagation(NamedTuple):
             finish_time = time.time()
 
             print(
-                f"Epoch {index + 1} | Error: {current_error} | Time: {round(1000 * (finish_time - start_time), 2)} ms"
+                f"Epoch {index + 1}\t|\tError: {round(current_error, 2)}\t|\tTime: {round(1000 * (finish_time - start_time), 2)} ms"
             )
 
             index += 1

@@ -3,7 +3,7 @@ from FileAccess import FileSystem
 
 if __name__ == "__main__":
     neural_network = FileSystem.read_neural_network(
-        "./Bagian-B/test-cases/txt/sse_only.txt"
+        "./Bagian-B/test-cases/txt/sigmoid_mini_batch_GD.txt"
     )
 
     print("Weight:")
