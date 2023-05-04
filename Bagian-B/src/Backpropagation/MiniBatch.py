@@ -1,6 +1,6 @@
 import numpy as np
 from typing import NamedTuple, Tuple
-from NeuralNetwork import NeuralNetwork
+from NeuralNetwork import NeuralNetwork, Layer
 from . import ErrorFunction
 
 
@@ -15,6 +15,9 @@ class MiniBatch(NamedTuple):
         )
         result: NeuralNetwork = self.neural_network
         previous_delta_error: np.ndarray = None
+        new_layer: list[Layer] = [
+            None for _ in range(len(list_of_output))
+        ]
 
         for i in range(len(list_of_output) - 1, -1, -1):
             raw_x = self.partitioned_learning_data if i == 0 else list_of_output[i - 1]
@@ -28,10 +31,11 @@ class MiniBatch(NamedTuple):
 
             if i == len(list_of_output) - 1:
                 delta_error = np.multiply(np.subtract(t, o), derivated_output)
+
                 delta_weight = np.array(
                     np.dot(learning_rate, np.dot(x.T, delta_error))
                 )
-                result.list_of_layer[i] = result.list_of_layer[i].get_updated_weight(
+                new_layer[i] = result.list_of_layer[i].get_updated_weight(
                     delta_weight
                 )
                 previous_delta_error = delta_error
@@ -47,10 +51,13 @@ class MiniBatch(NamedTuple):
                 delta_weight = np.array(
                     np.dot(learning_rate, np.dot(x.T, delta_error))
                 )
-                result.list_of_layer[i] = result.list_of_layer[i].get_updated_weight(
+                new_layer[i] = result.list_of_layer[i].get_updated_weight(
                     delta_weight
                 )
                 previous_delta_error = delta_error
+
+        for i in range(len(new_layer)):
+            result.list_of_layer[i] = new_layer[i]
 
         current_output = result.get_batch_output(
             self.partitioned_learning_data
