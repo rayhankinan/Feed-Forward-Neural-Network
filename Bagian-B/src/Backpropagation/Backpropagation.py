@@ -45,11 +45,11 @@ class Backpropagation(NamedTuple):
             )
 
             finish_time = time.time()
+
+            print(
+                f"Epoch {index + 1}\t|\tError: {round(current_error, 4)}\t|\tTime: {round(1000 * (finish_time - start_time), 4)} ms"
+            )
+
             index += 1
-            if (current_error <= threshold or index >= max_iter):
-                print(
-                    f"Last Epoch (Epoch {index + 1})\t|\tError: {round(current_error, 4)}\t|\tTime: {round(1000 * (finish_time - start_time), 4)} ms"
-                )
-                break
 
         return result

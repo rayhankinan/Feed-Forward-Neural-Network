@@ -12,7 +12,7 @@ class FileSystem:
 
             prev_num_of_perceptrons = input_size
             list_of_layer: list[Layer] = []
-            activation_function_type: str
+            latest_activation_function_type: str = None
 
             for _ in range(num_of_layers):
                 num_of_perceptrons = int(file.readline().rstrip('\n'))
@@ -26,6 +26,9 @@ class FileSystem:
                     list_of_weight_row.append(row)
 
                 activation_function_type = file.readline().rstrip('\n')
+
+                if latest_activation_function_type == "softmax":
+                    raise NotImplementedError()
 
                 activation_function: ActivationFunction
                 match activation_function_type:
@@ -44,6 +47,7 @@ class FileSystem:
                 list_of_layer.append(layer)
 
                 prev_num_of_perceptrons = num_of_perceptrons
+                latest_activation_function_type = activation_function_type
 
             initial_neural_network = NeuralNetwork(list_of_layer)
 
@@ -76,7 +80,7 @@ class FileSystem:
             )
 
             error_function: ErrorFunction
-            match activation_function_type:
+            match latest_activation_function_type:
                 case "linear" | "relu" | "sigmoid":
                     error_function = SumOfSquaredErrorFunction()
                 case "softmax":

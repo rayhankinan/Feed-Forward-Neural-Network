@@ -23,8 +23,6 @@ class SumOfSquaredErrorFunction(ErrorFunction):
 
         return self
 
-# TODO: Cek apakah Cross Entropy Error Function sudah sesuai dengan spek
-
 
 class CrossEntropyErrorFunction(ErrorFunction):
     def __new__(cls) -> CrossEntropyErrorFunction:
