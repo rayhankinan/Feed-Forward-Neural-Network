@@ -44,7 +44,7 @@ if __name__ == "__main__":
         learning_rate=0.1,
         mini_batch_size=1,
         max_iter=1000,
-        threshold=10.0,
+        threshold=0.1 * len(numpy_X_train),
         error_function=cross_entropy
     )
     print()
@@ -62,7 +62,8 @@ if __name__ == "__main__":
     print(f"Actual:\n{numpy_y_test}")
     print()
 
-    print(f"Error: {cross_entropy(y_pred, numpy_y_test)}")
+    error = cross_entropy(y_pred, numpy_y_test)
+    print(f"Error: {error} / {round(100 * error / len(numpy_X_test), 2)}%")
 
     FileSystem.save_to_file(
         new_neural_network,
