@@ -21,7 +21,8 @@ if __name__ == "__main__":
         )
 
     # new_neural_network = FileSystem.load_from_file(
-    #     "./Bagian-B/model/linear.txt")
+    #     "./Bagian-B/model/linear.txt"
+    # )
 
     # print("Weight:")
     # for weight in new_neural_network.get_weight():

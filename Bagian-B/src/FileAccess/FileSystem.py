@@ -31,17 +31,16 @@ class FileSystem:
                     raise NotImplementedError()
 
                 activation_function: ActivationFunction
-                match activation_function_type:
-                    case "linear":
-                        activation_function = LinearActivationFunction()
-                    case "relu":
-                        activation_function = ReLUActivationFunction()
-                    case "sigmoid":
-                        activation_function = SigmoidActivationFunction()
-                    case "softmax":
-                        activation_function = SoftmaxActivationFunction()
-                    case _:
-                        raise NotImplementedError()
+                if activation_function_type == "linear":
+                    activation_function = LinearActivationFunction()
+                elif activation_function_type == "relu":
+                    activation_function = ReLUActivationFunction()
+                elif activation_function_type == "sigmoid":
+                    activation_function = SigmoidActivationFunction()
+                elif activation_function_type == "softmax":
+                    activation_function = SoftmaxActivationFunction()
+                else:
+                    raise NotImplementedError()
 
                 layer = Layer(list_of_weight_row, activation_function)
                 list_of_layer.append(layer)
@@ -74,17 +73,16 @@ class FileSystem:
                     file.write("\n")
 
                 activation_function_type: str = None
-                match layer.activation_function:
-                    case LinearActivationFunction():
-                        activation_function_type = "linear"
-                    case ReLUActivationFunction():
-                        activation_function_type = "relu"
-                    case SigmoidActivationFunction():
-                        activation_function_type = "sigmoid"
-                    case SoftmaxActivationFunction():
-                        activation_function_type = "softmax"
-                    case _:
-                        raise NotImplementedError()
+                if type(layer.activation_function) is LinearActivationFunction:
+                    activation_function_type = "linear"
+                elif type(layer.activation_function) is ReLUActivationFunction:
+                    activation_function_type = "relu"
+                elif type(layer.activation_function) is SigmoidActivationFunction:
+                    activation_function_type = "sigmoid"
+                elif type(layer.activation_function) is SoftmaxActivationFunction:
+                    activation_function_type = "softmax"
+                else:
+                    raise NotImplementedError()
 
                 file.write(f"{activation_function_type}\n")
 
@@ -115,17 +113,16 @@ class FileSystem:
                     raise NotImplementedError()
 
                 activation_function: ActivationFunction
-                match activation_function_type:
-                    case "linear":
-                        activation_function = LinearActivationFunction()
-                    case "relu":
-                        activation_function = ReLUActivationFunction()
-                    case "sigmoid":
-                        activation_function = SigmoidActivationFunction()
-                    case "softmax":
-                        activation_function = SoftmaxActivationFunction()
-                    case _:
-                        raise NotImplementedError()
+                if activation_function_type == "linear":
+                    activation_function = LinearActivationFunction()
+                elif activation_function_type == "relu":
+                    activation_function = ReLUActivationFunction()
+                elif activation_function_type == "sigmoid":
+                    activation_function = SigmoidActivationFunction()
+                elif activation_function_type == "softmax":
+                    activation_function = SoftmaxActivationFunction()
+                else:
+                    raise NotImplementedError()
 
                 layer = Layer(list_of_weight_row, activation_function)
                 list_of_layer.append(layer)
@@ -164,12 +161,11 @@ class FileSystem:
             )
 
             error_function: ErrorFunction
-            match latest_activation_function_type:
-                case "linear" | "relu" | "sigmoid":
-                    error_function = SumOfSquaredErrorFunction()
-                case "softmax":
-                    error_function = CrossEntropyErrorFunction()
-                case _:
-                    raise NotImplementedError()
+            if latest_activation_function_type == "linear" or latest_activation_function_type == "relu" or latest_activation_function_type == "sigmoid":
+                error_function = SumOfSquaredErrorFunction()
+            elif latest_activation_function_type == "softmax":
+                error_function = CrossEntropyErrorFunction()
+            else:
+                raise NotImplementedError()
 
             return backpropagation.learn(learning_rate, mini_batch_size, max_iter, threshold, error_function)
