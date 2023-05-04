@@ -1,6 +1,6 @@
 import numpy as np
 from typing import NamedTuple
-from NeuralNetwork import NeuralNetwork, Layer
+from NeuralNetwork import NeuralNetwork, Layer, SoftmaxActivationFunction
 
 
 class MiniBatch(NamedTuple):
@@ -29,7 +29,10 @@ class MiniBatch(NamedTuple):
             )
 
             if i == len(list_of_output) - 1:
-                delta_error = np.multiply(np.subtract(t, o), derivated_output)
+                delta_error = -np.multiply(
+                    np.subtract(o, t),
+                    derivated_output
+                ) if type(result.list_of_layer[i].activation_function) is not SoftmaxActivationFunction else -derivated_output
 
                 delta_weight = np.array(
                     np.dot(learning_rate, np.dot(x.T, delta_error))
