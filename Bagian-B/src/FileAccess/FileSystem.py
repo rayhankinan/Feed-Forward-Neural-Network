@@ -7,25 +7,25 @@ class FileSystem:
     @staticmethod
     def load_from_file(path: str) -> NeuralNetwork:
         with open(path, "r") as file:
-            input_size = int(file.readline().rstrip())
-            num_of_layers = int(file.readline().rstrip())
+            input_size = int(file.readline().strip())
+            num_of_layers = int(file.readline().strip())
 
             prev_num_of_perceptrons = input_size
             list_of_layer: list[Layer] = []
             latest_activation_function_type: str = None
 
             for _ in range(num_of_layers):
-                num_of_perceptrons = int(file.readline().rstrip())
+                num_of_perceptrons = int(file.readline().strip())
                 list_of_weight_row: list[Row] = []
 
                 for _ in range(prev_num_of_perceptrons + 1):
                     weight = np.array(
-                        list(map(float, file.readline().rstrip().split()))
+                        list(map(float, file.readline().strip().split()))
                     )
                     row = Row(weight)
                     list_of_weight_row.append(row)
 
-                activation_function_type = file.readline().rstrip()
+                activation_function_type = file.readline().strip()
 
                 if latest_activation_function_type == "softmax":
                     raise NotImplementedError()
@@ -89,25 +89,25 @@ class FileSystem:
     @staticmethod
     def learn_from_file(path: str) -> NeuralNetwork:
         with open(path, "r") as file:
-            input_size = int(file.readline().rstrip())
-            num_of_layers = int(file.readline().rstrip())
+            input_size = int(file.readline().strip())
+            num_of_layers = int(file.readline().strip())
 
             prev_num_of_perceptrons = input_size
             list_of_layer: list[Layer] = []
             latest_activation_function_type: str = None
 
             for _ in range(num_of_layers):
-                num_of_perceptrons = int(file.readline().rstrip())
+                num_of_perceptrons = int(file.readline().strip())
                 list_of_weight_row: list[Row] = []
 
                 for _ in range(prev_num_of_perceptrons + 1):
                     weight = np.array(
-                        list(map(float, file.readline().rstrip().split()))
+                        list(map(float, file.readline().strip().split()))
                     )
                     row = Row(weight)
                     list_of_weight_row.append(row)
 
-                activation_function_type = file.readline().rstrip()
+                activation_function_type = file.readline().strip()
 
                 if latest_activation_function_type == "softmax":
                     raise NotImplementedError()
@@ -132,27 +132,27 @@ class FileSystem:
 
             initial_neural_network = NeuralNetwork(list_of_layer)
 
-            test_case_size = int(file.readline().rstrip())
+            test_case_size = int(file.readline().strip())
             input_array: list[np.ndarray] = []
             target_array: list[np.ndarray] = []
 
             for _ in range(test_case_size):
                 input_vector = list(
-                    map(float, file.readline().rstrip().split())
+                    map(float, file.readline().strip().split())
                 )
 
                 input_array.append(np.array(input_vector))
 
             for _ in range(test_case_size):
                 target_vector = list(
-                    map(float, file.readline().rstrip().split())
+                    map(float, file.readline().strip().split())
                 )
                 target_array.append(np.array(target_vector))
 
-            learning_rate = float(file.readline().rstrip())
-            mini_batch_size = int(file.readline().rstrip())
-            max_iter = int(file.readline().rstrip())
-            threshold = float(file.readline().rstrip())
+            learning_rate = float(file.readline().strip())
+            mini_batch_size = int(file.readline().strip())
+            max_iter = int(file.readline().strip())
+            threshold = float(file.readline().strip())
 
             backpropagation = Backpropagation(
                 initial_neural_network,
