@@ -41,10 +41,10 @@ if __name__ == "__main__":
     cross_entropy = CrossEntropyErrorFunction()
 
     new_neural_network = backpropagation.learn(
-        learning_rate=0.1,
+        learning_rate=0.01,
         mini_batch_size=1,
-        max_iter=1000,
-        threshold=0.1 * len(numpy_X_train),
+        max_iter=10000,
+        threshold=0.05 * len(numpy_X_train),
         error_function=cross_entropy
     )
     print()
