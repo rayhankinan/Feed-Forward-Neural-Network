@@ -47,12 +47,19 @@ if __name__ == "__main__":
         threshold=10.0,
         error_function=cross_entropy
     )
+    print()
 
     print("Weight:")
     for weight in neural_network.get_weight():
         print(weight)
+    print()
 
     y_pred = new_neural_network.get_batch_output(numpy_X_test)
-    print(f"Prediction: {y_pred}")
-    print(f"Actual: {numpy_y_test}")
+
+    print(f"Prediction:\n{y_pred}")
+    print()
+
+    print(f"Actual:\n{numpy_y_test}")
+    print()
+
     print(f"Error: {cross_entropy(y_pred, numpy_y_test)}")
