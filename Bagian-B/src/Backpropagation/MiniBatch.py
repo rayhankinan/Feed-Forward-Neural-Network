@@ -1,7 +1,6 @@
 import numpy as np
-from typing import NamedTuple, Tuple
+from typing import NamedTuple
 from NeuralNetwork import NeuralNetwork, Layer
-from . import ErrorFunction
 
 
 class MiniBatch(NamedTuple):
@@ -9,7 +8,7 @@ class MiniBatch(NamedTuple):
     partitioned_learning_data: np.ndarray
     partitioned_learning_target: np.ndarray
 
-    def learn(self, learning_rate: float, error_function: ErrorFunction) -> Tuple[NeuralNetwork, float]:
+    def learn(self, learning_rate: float) -> NeuralNetwork:
         list_of_output = self.neural_network.get_all_batch_output(
             self.partitioned_learning_data
         )
@@ -59,12 +58,4 @@ class MiniBatch(NamedTuple):
         for i in range(len(new_layer)):
             result.list_of_layer[i] = new_layer[i]
 
-        current_output = result.get_batch_output(
-            self.partitioned_learning_data
-        )
-        sum_error = error_function(
-            current_output,
-            self.partitioned_learning_target,
-        )
-
-        return result, sum_error
+        return result
