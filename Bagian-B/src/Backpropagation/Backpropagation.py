@@ -15,7 +15,7 @@ class Backpropagation(NamedTuple):
         result: NeuralNetwork = self.neural_network
 
         for _ in range(max_iter):
-            if current_error <= threshold:
+            if current_error < threshold:
                 break
 
             start_index = 0
@@ -36,5 +36,7 @@ class Backpropagation(NamedTuple):
                 )
                 start_index += mini_batch_size
                 current_error += new_error
+
+            print(current_error)
 
         return result
