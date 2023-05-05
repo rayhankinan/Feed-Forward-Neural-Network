@@ -36,7 +36,6 @@ class MiniBatch(NamedTuple):
                 delta_weight = np.array(
                     np.dot(learning_rate, np.dot(x.T, delta_error))
                 )
-                print(delta_weight)
                 new_layer[i] = self.neural_network.list_of_layer[i].get_updated_weight(
                     delta_weight
                 )
@@ -56,7 +55,6 @@ class MiniBatch(NamedTuple):
                 delta_weight = np.array(
                     np.dot(learning_rate, np.dot(x.T, delta_error))
                 )
-                print(delta_weight)
                 new_layer[i] = self.neural_network.list_of_layer[i].get_updated_weight(
                     delta_weight
                 )
