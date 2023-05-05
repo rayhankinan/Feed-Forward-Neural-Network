@@ -168,4 +168,8 @@ class FileSystem:
             else:
                 raise NotImplementedError()
 
-            return backpropagation.learn(learning_rate, mini_batch_size, max_iter, threshold, error_function)
+            backpropagation.learn(
+                learning_rate, mini_batch_size, max_iter, threshold, error_function
+            )
+
+            return backpropagation.neural_network

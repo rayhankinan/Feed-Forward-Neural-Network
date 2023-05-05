@@ -8,11 +8,10 @@ class MiniBatch(NamedTuple):
     partitioned_learning_data: np.ndarray
     partitioned_learning_target: np.ndarray
 
-    def learn(self, learning_rate: float) -> NeuralNetwork:
+    def learn(self, learning_rate: float) -> None:
         list_of_output = self.neural_network.get_all_batch_output(
             self.partitioned_learning_data
         )
-        result: NeuralNetwork = self.neural_network
         previous_delta_error: np.ndarray = None
         new_layer: list[Layer] = [
             None for _ in range(len(list_of_output))
@@ -24,7 +23,7 @@ class MiniBatch(NamedTuple):
 
             o = list_of_output[i]
             t = self.partitioned_learning_target
-            derivated_output = result.list_of_layer[i].activation_function.get_derivative_output(
+            derivated_output = self.neural_network.list_of_layer[i].activation_function.get_derivative_output(
                 o, t
             )
 
@@ -33,18 +32,20 @@ class MiniBatch(NamedTuple):
                 delta_error = -np.multiply(
                     np.subtract(o, t),
                     derivated_output
-                ) if type(result.list_of_layer[i].activation_function) is not SoftmaxActivationFunction else -derivated_output
+                ) if type(self.neural_network.list_of_layer[i].activation_function) is not SoftmaxActivationFunction else -derivated_output
                 delta_weight = np.array(
                     np.dot(learning_rate, np.dot(x.T, delta_error))
                 )
-                new_layer[i] = result.list_of_layer[i].get_updated_weight(
+                new_layer[i] = self.neural_network.list_of_layer[i].get_updated_weight(
                     delta_weight
                 )
                 previous_delta_error = delta_error
 
             # Hidden Layer
             else:
-                output_weight = result.list_of_layer[i + 1].get_weight()[1:]
+                output_weight = self.neural_network.list_of_layer[i + 1].get_weight()[
+                    1:
+                ]
                 delta_error = np.multiply(
                     np.dot(
                         previous_delta_error, output_weight.T
@@ -54,12 +55,10 @@ class MiniBatch(NamedTuple):
                 delta_weight = np.array(
                     np.dot(learning_rate, np.dot(x.T, delta_error))
                 )
-                new_layer[i] = result.list_of_layer[i].get_updated_weight(
+                new_layer[i] = self.neural_network.list_of_layer[i].get_updated_weight(
                     delta_weight
                 )
                 previous_delta_error = delta_error
 
         for i in range(len(new_layer)):
-            result.list_of_layer[i] = new_layer[i]
-
-        return result
+            self.neural_network.list_of_layer[i] = new_layer[i]

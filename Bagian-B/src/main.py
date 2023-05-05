@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     cross_entropy = CrossEntropyErrorFunction()
 
-    new_neural_network = backpropagation.learn(
+    backpropagation.learn(
         learning_rate=0.01,
         mini_batch_size=1,
         max_iter=10000,
@@ -54,7 +54,7 @@ if __name__ == "__main__":
         print(weight)
     print()
 
-    y_pred = new_neural_network.get_batch_output(numpy_X_test)
+    y_pred = neural_network.get_batch_output(numpy_X_test)
 
     print(f"Prediction:\n{y_pred}")
     print()
@@ -66,6 +66,6 @@ if __name__ == "__main__":
     print(f"Error: {error} / {round(100 * error / len(numpy_X_test), 2)}%")
 
     FileSystem.save_to_file(
-        new_neural_network,
+        neural_network,
         "./Bagian-B/model/iris-learn.txt"
     )
