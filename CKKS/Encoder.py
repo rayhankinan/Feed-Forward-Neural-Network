@@ -3,31 +3,24 @@ from numpy.polynomial import Polynomial
 from typing import Any
 
 
-def round_coordinates(coordinates: np.ndarray[Any, np.dtype[np.float64]]) -> np.ndarray[Any, np.dtype[np.float64]]:
-    # Gives the integral rest
-    coordinates = coordinates - np.floor(coordinates)
-
-    return coordinates
-
-
+# Rounds coordinates randonmly (Learning with Errors)
 def coordinate_wise_random_rounding(coordinates: np.ndarray[Any, np.dtype[np.float64]]) -> np.ndarray[Any, np.dtype[np.int64]]:
-    # Rounds coordinates randonmly (Learning with Errors)
-    r = round_coordinates(coordinates)
+    r = np.array(coordinates - np.floor(coordinates), dtype=np.float64)
     f = np.array(
         [
             np.random.choice([c, c - 1], 1, p=[1 - c, c])
             for c in r
         ],
-        dtype=np.complex128
+        dtype=np.float64
     ).reshape(-1)
 
-    rounded_coordinates = np.array(coordinates - f, dtype=np.complex128)
-    rounded_coordinates = [
+    float_rounded_coordinates = np.array(coordinates - f, dtype=np.float64)
+    int_coordinates = [
         int(np.real(coeff))
-        for coeff in rounded_coordinates
+        for coeff in float_rounded_coordinates
     ]
 
-    return np.array(rounded_coordinates, dtype=np.int64)
+    return np.array(int_coordinates, dtype=np.int64)
 
 
 class Encoder:
@@ -139,7 +132,7 @@ class Encoder:
 
 
 if __name__ == "__main__":
-    encoder = Encoder(8, 1024)
+    encoder = Encoder(8, 64)
 
     z = np.array([3 + 4j, 2 - 1j], dtype=np.complex128)
     print(z)
