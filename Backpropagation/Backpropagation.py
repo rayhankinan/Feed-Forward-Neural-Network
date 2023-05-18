@@ -2,7 +2,7 @@ import numpy as np
 import time
 from typing import Any
 from NeuralNetwork import NeuralNetwork
-from . import MiniBatch, ErrorFunction
+from . import MiniBatch
 
 
 class Backpropagation:
@@ -15,8 +15,17 @@ class Backpropagation:
         self.learning_data = learning_data
         self.learning_target = learning_target
 
-    def learn(self, learning_rate: float, mini_batch_size: int, max_iter: int, threshold: float, error_function: ErrorFunction) -> None:
-        data_length = self.learning_data.shape[0]
+    def learn(self, learning_rate: float, mini_batch_size: int, max_iter: int, threshold: float) -> None:
+        # Shuffle Learning Data
+        combined = np.column_stack((self.learning_data, self.learning_target))
+        np.random.shuffle(combined)
+
+        # Split Learning Data and Learning Target
+        _, col = self.learning_target.shape
+        shuffled_learning_data = combined[:, :-col]
+        shuffled_learning_target = combined[:, -col:]
+
+        data_length = shuffled_learning_data.shape[0]
         current_error = np.inf
         index = 0
 
@@ -26,15 +35,15 @@ class Backpropagation:
 
             # Get Output
             current_output = self.neural_network.get_batch_output(
-                self.learning_data
+                shuffled_learning_data
             )
 
             # Mini-Batch Learning
             start_index = 0
             while start_index < data_length:
                 end_index = min(start_index + mini_batch_size, data_length)
-                partitioned_learning_data = self.learning_data[start_index:end_index]
-                partitioned_learning_target = self.learning_target[start_index:end_index]
+                partitioned_learning_data = shuffled_learning_data[start_index:end_index]
+                partitioned_learning_target = shuffled_learning_target[start_index:end_index]
 
                 mini_batch = MiniBatch(
                     self.neural_network,
@@ -45,9 +54,9 @@ class Backpropagation:
                 start_index += mini_batch_size
 
             # Get Error
-            current_error = error_function.get_output(
+            current_error = self.neural_network.error_function.get_output(
                 current_output,
-                self.learning_target
+                shuffled_learning_target
             )
 
             finish_time = time.perf_counter()
