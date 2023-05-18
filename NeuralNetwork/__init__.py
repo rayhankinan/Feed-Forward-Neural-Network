@@ -1,3 +1,3 @@
 from .ActivationFunction import *
-from .Layer import *
+from .WeightArray import *
 from .NeuralNetwork import *

@@ -4,7 +4,7 @@ from Serialization.Compilable import get_single, get_batch, add_batch
 from . import ActivationFunction
 
 
-class Layer:
+class WeightArray:
     array_of_weight: np.ndarray[Any, np.dtype[np.float64]]
     activation_function: ActivationFunction
 

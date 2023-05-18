@@ -27,14 +27,14 @@ class MiniBatch:
 
             o = list_of_output[i]
             t = self.partitioned_learning_target
-            derivated_output = self.neural_network.list_of_layer[i].activation_function.get_derivative_output(
+            derivated_output = self.neural_network.list_of_weight_array[i].activation_function.get_derivative_output(
                 o, t
             )
 
-            # Output Layer
+            # Output Weight
             if i == len(list_of_output) - 1:
                 delta_error: np.ndarray[Any, np.dtype[np.float64]]
-                if type(self.neural_network.list_of_layer[i].activation_function) is not SoftmaxActivationFunction:
+                if type(self.neural_network.list_of_weight_array[i].activation_function) is not SoftmaxActivationFunction:
                     delta_error = hadamard_product(
                         subtract_batch(t, o),
                         derivated_output
@@ -49,10 +49,10 @@ class MiniBatch:
                 list_of_delta_weight.append(delta_weight)
                 previous_delta_error = delta_error
 
-            # Hidden Layer
+            # Hidden Weight
             else:
-                output_layer = self.neural_network.list_of_layer[i + 1]
-                output_weight = output_layer.get_weight()[1:]
+                output_weight_array = self.neural_network.list_of_weight_array[i + 1]
+                output_weight = output_weight_array.get_weight()[1:]
                 delta_error = hadamard_product(
                     dot_product(previous_delta_error, output_weight.T),
                     derivated_output
@@ -67,6 +67,6 @@ class MiniBatch:
         list_of_delta_weight.reverse()
 
         for i in range(len(list_of_delta_weight)):
-            self.neural_network.list_of_layer[i].add_weight(
+            self.neural_network.list_of_weight_array[i].add_weight(
                 list_of_delta_weight[i]
             )
