@@ -1,4 +1,5 @@
 import numpy as np
+import time
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from NeuralNetwork import NeuralNetwork, Layer, SigmoidActivationFunction, SoftmaxActivationFunction, CrossEntropyErrorFunction
@@ -43,14 +44,16 @@ if __name__ == "__main__":
     )
 
     # Train Neural Network
+    start_time = time.perf_counter()
     neural_network.train(
-        learning_data=numpy_X_train,
-        learning_target=numpy_y_train,
+        numpy_X_train,
+        numpy_y_train,
         learning_rate=0.01,
         mini_batch_size=1,
         max_iter=10000,
         threshold=0.01 * len(numpy_X_train),
     )
+    end_time = time.perf_counter()
 
     # Test Neural Network
     y_pred = neural_network.get_batch_output(numpy_X_test)
@@ -65,4 +68,7 @@ if __name__ == "__main__":
 
     error = cross_entropy.get_output(y_pred, numpy_y_test)
     print(f"Error: {error} / {round(100 * error / len(numpy_X_test), 2)}%")
+    print()
+
+    print(f"Training Time: {round(end_time - start_time, 2)} seconds")
     print()

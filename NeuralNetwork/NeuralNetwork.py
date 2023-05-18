@@ -69,7 +69,7 @@ class NeuralNetwork:
     def get_weight(self) -> list[np.ndarray[Any, np.dtype[np.float64]]]:
         return [weight_array.get_weight() for weight_array in self.list_of_weight_array]
 
-    def train(self, learning_data: np.ndarray[Any, np.dtype[np.float64]], learning_target: np.ndarray[Any, np.dtype[np.float64]], learning_rate: float, mini_batch_size: int, max_iter: int, threshold: float) -> None:
+    def train(self, learning_data: np.ndarray[Any, np.dtype[np.float64]], learning_target: np.ndarray[Any, np.dtype[np.float64]], learning_rate: float = 0.01, mini_batch_size: int = 1, max_iter: int = 10000, threshold: float = 0.0) -> None:
         backpropagation = Backpropagation(
             self,
             learning_data,
